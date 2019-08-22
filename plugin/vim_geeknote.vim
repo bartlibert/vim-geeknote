@@ -1,117 +1,117 @@
-python import sys
-python import vim
-python sys.path.append(vim.eval('expand("<sfile>:h")'))
+python3 import sys
+python3 import vim
+python3 sys.path.append(vim.eval('expand("<sfile>:h")'))
 
 " ---------------------- Configuration ----------------------------------------
 
 if has('nvim')
-    let g:GeeknoteNeovimMode="True"
+    let g:KeepNeovimMode='True'
 endif
 
 " ---------------------- Functions --------------------------------------------
 
-function! Vim_GeeknoteTerminate()
-python << endOfPython
-from vim_geeknote import GeeknoteTerminate
-GeeknoteTerminate()
+function! Vim_KeepTerminate()
+python3 << endOfPython
+from vim_geeknote import KeepTerminate
+KeepTerminate()
 endOfPython
 endfunction
 
-function! Vim_GeeknoteToggle()
-python << endOfPython
-from vim_geeknote import GeeknoteToggle
-GeeknoteToggle()
+function! Vim_KeepToggle()
+python3 << endOfPython
+from vim_geeknote import KeepToggle
+KeepToggle()
 endOfPython
 endfunction
 
-function! Vim_GeeknoteActivateNode()
-python << endOfPython
-from vim_geeknote import GeeknoteActivateNode
-GeeknoteActivateNode()
+function! Vim_KeepActivateNode()
+python3 << endOfPython
+from vim_geeknote import KeepActivateNode
+KeepActivateNode()
 endOfPython
 endfunction
 
-function! Vim_GeeknoteCloseNote(arg1)
-python << endOfPython
-from vim_geeknote import GeeknoteCloseNote
+function! Vim_KeepCloseNote(arg1)
+python3 << endOfPython
+from vim_geeknote import KeepCloseNote
 filename = vim.eval("a:arg1")
-GeeknoteCloseNote(filename)
+KeepCloseNote(filename)
 endOfPython
 endfunction
 
-function! Vim_GeeknoteCreateNotebook(arg1)
-python << endOfPython
-from vim_geeknote import GeeknoteCreateNotebook
+function! Vim_KeepCreateNotebook(arg1)
+python3 << endOfPython
+from vim_geeknote import KeepCreateNotebook
 name = vim.eval("a:arg1")
-GeeknoteCreateNotebook(name)
+KeepCreateNotebook(name)
 endOfPython
 endfunction
 
-function! Vim_GeeknoteCreateNote(arg1)
-python << endOfPython
-from vim_geeknote import GeeknoteCreateNote
+function! Vim_KeepCreateNote(arg1)
+python3 << endOfPython
+from vim_geeknote import KeepCreateNote
 name = vim.eval("a:arg1")
-GeeknoteCreateNote(name)
+KeepCreateNote(name)
 endOfPython
 endfunction
 
-function! Vim_GeeknoteSaveAsNote()
-python << endOfPython
-from vim_geeknote import GeeknoteSaveAsNote
-GeeknoteSaveAsNote()
+function! Vim_KeepSaveAsNote()
+python3 << endOfPython
+from vim_geeknote import KeepSaveAsNote
+KeepSaveAsNote()
 endOfPython
 endfunction
 
-function! Vim_GeeknoteSearch(arg1)
-python << endOfPython
-from vim_geeknote import GeeknoteSearch
+function! Vim_KeepSearch(arg1)
+python3 << endOfPython
+from vim_geeknote import KeepSearch
 args = vim.eval("a:arg1")
-GeeknoteSearch(args)
+KeepSearch(args)
 endOfPython
 endfunction
 
-function! Vim_GeeknotePrepareToSaveNote(arg1)
-python << endOfPython
-from vim_geeknote import GeeknotePrepareToSaveNote
+function! Vim_KeepPrepareToSaveNote(arg1)
+python3 << endOfPython
+from vim_geeknote import KeepPrepareToSaveNote
 filename = vim.eval("a:arg1")
-GeeknotePrepareToSaveNote(filename)
+KeepPrepareToSaveNote(filename)
 endOfPython
 endfunction
 
-function! Vim_GeeknoteSaveNote(arg1)
-python << endOfPython
-from vim_geeknote import GeeknoteSaveNote
+function! Vim_KeepSaveNote(arg1)
+python3 << endOfPython
+from vim_geeknote import KeepSaveNote
 filename = vim.eval("a:arg1")
-GeeknoteSaveNote(filename)
+KeepSaveNote(filename)
 endOfPython
 endfunction
 
-function! Vim_GeeknoteSync()
-python << endOfPython
-from vim_geeknote import GeeknoteSync
-GeeknoteSync()
+function! Vim_KeepSync()
+python3 << endOfPython
+from vim_geeknote import KeepSync
+KeepSync()
 endOfPython
 endfunction
 
-function! Vim_GeeknoteCommitStart()
-python << endOfPython
-from vim_geeknote import GeeknoteCommitStart
-GeeknoteCommitStart()
+function! Vim_KeepCommitStart()
+python3 << endOfPython
+from vim_geeknote import KeepCommitStart
+KeepCommitStart()
 endOfPython
 endfunction
 
-function! Vim_GeeknoteCommitComplete()
-python << endOfPython
-from vim_geeknote import GeeknoteCommitComplete
-GeeknoteCommitComplete()
+function! Vim_KeepCommitComplete()
+python3 << endOfPython
+from vim_geeknote import KeepCommitComplete
+KeepCommitComplete()
 endOfPython
 endfunction
 
 " ---------------------- User Commands ----------------------------------------
 
-command!          Geeknote               call Vim_GeeknoteToggle()
-command! -nargs=1 GeeknoteCreateNotebook call Vim_GeeknoteCreateNotebook(<f-args>)
-command! -nargs=1 GeeknoteCreateNote     call Vim_GeeknoteCreateNote(<f-args>)
-command!          GeeknoteSaveAsNote     call Vim_GeeknoteSaveAsNote()
-command! -nargs=* GeeknoteSearch         call Vim_GeeknoteSearch(<q-args>)
-command!          GeeknoteSync           call Vim_GeeknoteSync()
+command!          Keep               call Vim_KeepToggle()
+command! -nargs=1 KeepCreateNotebook call Vim_KeepCreateNotebook(<f-args>)
+command! -nargs=1 KeepCreateNote     call Vim_KeepCreateNote(<f-args>)
+command!          KeepSaveAsNote     call Vim_KeepSaveAsNote()
+command! -nargs=* KeepSearch         call Vim_KeepSearch(<q-args>)
+command!          KeepSync           call Vim_KeepSync()

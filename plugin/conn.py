@@ -1,71 +1,46 @@
-import evernote.edam.limits.constants as Limits
+import gkeepapi
+from note import Note
 
-from geeknote.geeknote import *
+gkeep = gkeepapi.Keep()
+gkeep.login('lapino@gmail.com', 'llhrtnvwfogesgeo')
+# authToken = gkeep.authToken
+# noteStore = gkeep.getNoteStore()
 
-# Connection to Geeknote
-geeknote  = GeekNote()
-authToken = geeknote.authToken
-noteStore = geeknote.getNoteStore()
 
-def GeeknoteCreateNewNote(note):
-    return noteStore.createNote(authToken, note)
+def KeepCreateNewNote(note):
+    return gkeep.createNote(note.title, note.text)
 
-def GeeknoteCreateNewNotebook(notebook):
-    return noteStore.createNotebook(authToken, notebook)
 
-def GeeknoteFindNoteCounts():
-    return noteStore.findNoteCounts(authToken, NoteStore.NoteFilter(), False)
+def KeepFindNoteCounts():
+    return len(gkeep.all())
 
-def GeeknoteGetDefaultNotebook():
-    return noteStore.getDefaultNotebook(authToken)
 
-def GeeknoteGetNotes(searchWords=""):
-    filter = NoteStore.NoteFilter(order = Types.NoteSortOrder.UPDATED)
-    filter.words = searchWords
-
-    meta = NoteStore.NotesMetadataResultSpec()
-    meta.includeTitle        = True
-    meta.includeNotebookGuid = True
-    meta.includeTagGuids     = True
-
-    count  = Limits.EDAM_USER_NOTES_MAX
-    result = noteStore.findNotesMetadata(authToken, filter, 0, count, meta)
-    update_count = lambda c: max(c - len(result.notes), 0)
-    count = update_count(count)
-    
-    while ((result.totalNotes != len(result.notes)) and count != 0):
-        offset = len(result.notes)
-        result.notes += noteStore.findNotesMetadata(
-            authToken, filter, offset, count, meta).notes
-        count = update_count(count)
-
+def KeepGetNotes(searchWords=None, labels=None, archived=None, trashed=False, colors=None, pinned=None):
     notes = []
-    for key, note in enumerate(result.notes):
+    for gnote in gkeep.find(query=searchWords, labels=labels, colors=colors, pinned=pinned, archived=archived,
+                            trashed=trashed):
+        note = Note(title=gnote.title, text=gnote.text, id=gnote.server_id)
         notes.append(note)
 
     return notes
 
-def GeeknoteGetNotebook(guid):
-    try:
-        return noteStore.getNotebook(authToken, guid)
-    except:
-        return None
+def KeepGetAllNotes():
+    return gkeep.all()
 
-def GeeknoteGetNotebooks():
-    return noteStore.listNotebooks(authToken)
 
-def GeeknoteGetTags():
-    return noteStore.listTags(authToken)
+def KeepGetTags():
+    return gkeep.labels()
 
-def GeeknoteLoadNote(note):
-    return noteStore.getNote(authToken, note.guid, True, False, False, False)
 
-def GeeknoteRefreshNoteMeta(note):
-    return noteStore.getNote(authToken, note.guid, False, False, False, False)
+def KeepLoadNote(note):
+    return gkeep.get(note.id)
 
-def GeeknoteUpdateNote(note):
-    noteStore.updateNote(authToken, note)
 
-def GeeknoteUpdateNotebook(notebook):
-    noteStore.updateNotebook(authToken, notebook)
+def KeepRefreshNoteMeta(note):
+    return gkeep.get(note.id)
 
+
+def KeepUpdateNote(note):
+    update = KeepLoadNote(note)
+    update.title = note.title
+    update.text = note.text
